@@ -7,6 +7,7 @@
 #include <list>
 #include <algorithm>
 #include "Item.h"
+#include "Inventory.h"
 void vectorTest(std::vector<int>& vect)
 {
     vect.push_back(1);
@@ -46,7 +47,32 @@ void listTest(std::list<int> list)
 
 int main()
 {
+    Item* sword = new Item("Sword", 5);
+    Item* shield = new Item("Shield", 12);
+    Item* potion = new Item("Potion", 2);
+    Item* helmet = new Item("Helmet", 6);
+    Item* chestplate = new Item("ChestPlate", 15);
+    std::vector<Item*> vect{ sword };
+    Inventory* inventory = new Inventory(vect);
+    inventory->Print();
+
+    inventory->AddItem(potion);
+    inventory->AddItem(helmet);
+    inventory->AddItem(chestplate);
+    inventory->Print();
+
+    inventory->SortByName();
+    inventory->Print();
+
+    inventory->SortByWeight(ASCENDING);
+    inventory->Print(); 
     
+    inventory->SortByWeight(DESCENDING);
+    inventory->Print();
+
+    inventory->DeleteItem("butter");
+    inventory->DeleteItem("Sword");
+    inventory->Print();
 
 }
 

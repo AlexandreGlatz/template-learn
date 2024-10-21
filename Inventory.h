@@ -4,8 +4,18 @@
 #include <vector>
 enum Way
 {
-	ascending,
-	descending
+	ASCENDING,
+	DESCENDING
+};
+
+enum Filters
+{
+	WEIGHT_EQ,
+	WEIGHT_LT,
+	WEIGHT_GT,
+	NAME_CONTAINS,
+	NAME_BW,
+	NAME_EW
 };
 
 class Inventory
@@ -22,10 +32,13 @@ public:
 	void SortByName();
 	void SortByWeight(int way);
 
+	void Filter(int filter, int arg);
 
 	void SetItemVector(std::vector<Item*>& items) { m_itemsVector = items; }
 	std::vector<Item*>* GetItemVector() { return &m_itemsVector; };
+
 private:
 	std::vector<Item*> m_itemsVector;
 };
+
 

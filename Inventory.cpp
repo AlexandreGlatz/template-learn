@@ -1,8 +1,13 @@
 #include "Inventory.h"
-#include <algorithm>
 
-Inventory::Inventory(std::vector<Item*>& items) : m_itemsVector(items)
+Inventory::Inventory(std::vector<Item*>& items, int maxCapacity) : m_itemsVector(items), m_maxCapacity(maxCapacity)
 {
+}
+
+Inventory::Inventory()
+{
+	m_itemsVector.clear();
+	m_maxCapacity = 10;
 }
 
 Inventory::~Inventory()
@@ -22,7 +27,16 @@ void Inventory::Print()
 
 void Inventory::AddItem(Item* item)
 {
+	if (m_currentWeight + item->GetDetails()->weight > m_maxCapacity)
+	{
+		std::cout << "item : ";
+		item->Print();
+		std::cout << std::endl << "is too heavy to fit in the inventory, current weight is" <<m_currentWeight<< std::endl;
+		return;
+	}
+
 	m_itemsVector.push_back(item);
+	m_currentWeight += item->GetDetails()->weight;
 }
 
 void Inventory::DeleteItem(const char* itemName) //#TODO enum to choose
@@ -95,52 +109,32 @@ void Inventory::SortByWeight(int way)
 	}
 }
 
-
-void Inventory::Filter(int filter, int arg)
+int Inventory::AverageItemWeight()
 {
-	switch (filter)
-	{
-	case WEIGHT_EQ:
-		for (int i = 0; i < m_itemsVector.size(); i++)
-		{
-			if (m_itemsVector[i]->GetDetails()->weight == arg)
-				m_itemsVector[i]->Print();
-		}
-		break;
-
-	case WEIGHT_LT:
-		for (int i = 0; i < m_itemsVector.size(); i++)
-		{
-			if (m_itemsVector[i]->GetDetails()->weight < arg)
-				m_itemsVector[i]->Print();
-		}
-		break;
-
-	case WEIGHT_GT:
-		for (int i = 0; i < m_itemsVector.size(); i++)
-		{
-			if (m_itemsVector[i]->GetDetails()->weight > arg)
-				m_itemsVector[i]->Print();
-		}
-		break;
-
-	case NAME_BW:
-		for (int i = 0; i < m_itemsVector.size(); i++)
-		{
-			if (m_itemsVector[i]->GetDetails()->name[0] == arg)
-				m_itemsVector[i]->Print();
-		}
-		break;
-
-	case NAME_EW:
-		for (int i = 0; i < m_itemsVector.size(); i++)
-		{
-			if (m_itemsVector[i]->GetDetails()->name[sizeof(m_itemsVector[i]->GetDetails()->name) / sizeof(*m_itemsVector[i]->GetDetails()->name)] == arg)
-				m_itemsVector[i]->Print();
-		}
-		break;
-	}
+	return m_currentWeight / m_itemsVector.size();
 }
+
+int Inventory::TotalItemWeight()
+{
+	return m_currentWeight;
+}
+
+int Inventory::AmountItemHeavierThan(int weight)
+{
+	int amount = 0;
+	for (Item* item : m_itemsVector)
+	{
+		if (item->GetDetails()->weight > weight)
+			amount++;
+	}
+
+	return amount;
+}
+
+
+
+
+
 
 
 

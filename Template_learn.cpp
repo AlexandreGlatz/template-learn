@@ -10,6 +10,80 @@
 #include "Item.h"
 #include "Inventory.h"
 
+#pragma region EXO1
+void vectorTest( std::vector<int>& vect )
+{
+    vect.push_back( 1 );
+    std::sort( vect.begin() , vect.end() );
+
+    for ( const int& elem : vect )
+        std::cout << elem;
+
+    std::cout << std::endl;
+
+}
+
+void setTest( std::set<int> set )
+{
+    set.insert( 1 );
+    if ( set.contains( 2 ) == false )
+        return;
+    set.erase( 2 );
+
+    for ( std::set<int>::iterator i = set.begin(); i != set.end(); i++ )
+    {
+        std::cout << *i;
+    }
+    std::cout << std::endl;
+}
+
+void listTest( std::list<int> list )
+{
+    list.push_back( 1 );
+    list.erase( std::find( list.begin() , list.end() , 1 ) );
+
+    list.sort();
+    for ( const int& elem : list )
+        std::cout << elem;
+    std::cout << std::endl;
+}
+
+
+void inventoryTest()
+{
+    Item* sword = new Item( "Sword" , 5 );
+    Item* shield = new Item( "Shield" , 12 );
+    Item* potion = new Item( "Potion" , 2 );
+    Item* helmet = new Item( "Helmet" , 6 );
+    Item* chestplate = new Item( "ChestPlate" , 15 );
+    std::vector<Item*> vect{ sword };
+    Inventory* inventory = new Inventory( vect , 100 );
+    inventory->Print();
+
+    inventory->AddItem( potion );
+    inventory->AddItem( helmet );
+    inventory->AddItem( chestplate );
+    inventory->Print();
+
+    inventory->SortByName();
+    inventory->Print();
+
+    inventory->SortByWeight( ASCENDING );
+    inventory->Print();
+
+    inventory->SortByWeight( DESCENDING );
+    inventory->Print();
+
+    inventory->DeleteItem( "butter" );
+    inventory->DeleteItem( "Sword" );
+    inventory->Print();
+
+    inventory->Filter( []( Item* item ) { return item->GetDetails()->weight > 10; } );
+    inventory->Print();
+}
+#pragma endregion
+
+#pragma region EXO2
 void capacityTest()
 {
     srand(time(NULL));
@@ -75,76 +149,9 @@ void capacityTest()
     std::cout << "Time to delete set :" << delsetMs_int << std::endl;
     std::cout << "Time to delete list :" << dellistMs_int << std::endl;
 }
-void vectorTest(std::vector<int>& vect)
-{
-    vect.push_back(1);
-    std::sort(vect.begin(), vect.end());
+#pragma endregion
 
-    for (const int& elem : vect)
-        std::cout << elem;
-
-    std::cout<< std::endl;
-
-}
-
-void setTest(std::set<int> set)
-{
-    set.insert(1);
-    if (set.contains(2) == false)
-        return;
-    set.erase(2);
-    
-    for (std::set<int>::iterator i = set.begin(); i != set.end(); i++)
-    {
-        std::cout << *i;
-    }
-    std::cout<< std::endl;
-}
-
-void listTest(std::list<int> list)
-{
-    list.push_back(1);
-    list.erase(std::find(list.begin(), list.end(), 1));
-
-    list.sort();
-    for (const int& elem : list)
-        std::cout << elem;
-    std::cout << std::endl;
-}
-
-void inventoryTest()
-{
-    Item* sword = new Item("Sword", 5);
-    Item* shield = new Item("Shield", 12);
-    Item* potion = new Item("Potion", 2);
-    Item* helmet = new Item("Helmet", 6);
-    Item* chestplate = new Item("ChestPlate", 15);
-    std::vector<Item*> vect{ sword };
-    Inventory* inventory = new Inventory(vect, 100);
-    inventory->Print();
-
-    inventory->AddItem(potion);
-    inventory->AddItem(helmet);
-    inventory->AddItem(chestplate);
-    inventory->Print();
-
-    inventory->SortByName();
-    inventory->Print();
-
-    inventory->SortByWeight(ASCENDING);
-    inventory->Print();
-
-    inventory->SortByWeight(DESCENDING);
-    inventory->Print();
-
-    inventory->DeleteItem("butter");
-    inventory->DeleteItem("Sword");
-    inventory->Print();
-
-    inventory->Filter([](Item* item) { return item->GetDetails()->weight > 10; });
-    inventory->Print();
-}
-
+#pragma region EXO3
 template<typename T>
 int min(std::vector<T> vector, int size)
 {
@@ -171,29 +178,12 @@ int sum(std::list<T>)
     for (const int& elem : list)
         std::cout << elem;
 }
+#pragma endregion
+
 
 int main()
 {
-    srand(time(NULL));
-    std::vector<int> vecInt;
-    std::vector<float> vecFloat;
 
-    for (int i = 0; i < 10; i++)
-    {
-        vecInt.push_back(rand() % 500);
-        vecFloat.push_back(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500)));
-    }
-
-    for (const int& elem : vecInt)
-        std::cout << elem << ", ";
-
-    std::cout << std::endl;
-    for (const int& elem : vecFloat)
-        std::cout << elem << ", ";
-
-    std::cout << std::endl;
-    std::cout << "min int = " << min(vecInt, vecInt.size()) <<std::endl;
-    std::cout << "min float = " << min(vecFloat, vecFloat.size()) <<std::endl;
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage

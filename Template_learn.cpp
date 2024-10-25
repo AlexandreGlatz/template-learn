@@ -180,6 +180,35 @@ int sum(std::list<T>)
 }
 #pragma endregion
 
+#pragma region EXO4
+template<typename T>
+double Stats(T arr[], int size)
+{
+    T sum = 0;
+    for ( int i = 0; i < size; i++ )
+        sum += arr[ i ];
+
+    return static_cast<double>( sum ) / size
+}
+
+template<>
+double Stats(float arr[], int size)
+{
+    float sum = 0;
+    for ( int i = 0; i < size; i++ )
+        sum += arr[ i ];
+
+    double average = static_cast< double >( sum ) / size;
+
+    double variance = 0;
+    for ( int i = 0; i < size; i++ )
+        variance += (arr[ i ] - average) * (arr[i] - average);
+
+    variance /= size;
+    return variance;
+}
+
+#pragma endregion
 
 int main()
 {
